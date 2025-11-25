@@ -26,7 +26,7 @@ Frontend URL
 ```
 http://localhost:5173
 ```
-## Backend
+## Backend Installation
 1. Go to backend folder
 ```
 cd backend
