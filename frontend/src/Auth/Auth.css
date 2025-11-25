@@ -1,0 +1,135 @@
+/* BACKGROUND */
+.page-bg {
+  position: fixed;        
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("/src/assets/bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;   
+  z-index: -1;                   
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* MAIN BOX */
+.main-box {
+  width: 950px;
+  height: 520px;
+  display: flex;
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(25px);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+}
+
+/* LEFT SIDE - WHITE FORM AREA (STATIC) */
+.left-box {
+  width: 50%;
+  height: 100%;
+  background: white;
+  position: relative;
+  overflow: hidden;
+}
+
+/* RIGHT SIDE PANEL (STATIC) */
+.right-box {
+  width: 50%;
+  height: 100%;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(7px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* PANEL TEXT */
+.panel-content {
+  position: absolute;
+   width: 80%;
+    text-align: center; 
+    color: white; 
+    opacity: 0; 
+    transition: opacity .5s;
+}
+
+.panel-content h2 {
+  font-size: 34px;
+  margin-bottom: 10px;
+}
+
+.panel-content.left { opacity: 1; }
+.main-box.active .panel-content.left { opacity: 0; }
+.main-box.active .panel-content.right { opacity: 1; }
+
+/* SLIDING FORMS */
+.form-box {
+  width: 100%;
+  height: 100%;
+  padding: 20px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  transition: .6s ease-in-out;
+}
+
+/* LOGIN FORM POSITION */
+.login { left: 0; opacity: 1; }
+
+/* REGISTER FORM POSITION */
+.register { left: 100%; opacity: 0; }
+
+/* WHEN ACTIVE → SLIDE */
+.main-box.active .login {
+  left: -100%;
+  opacity: 0;
+}
+
+.main-box.active .register {
+  left: 0;
+  opacity: 1;
+}
+
+/* INPUT */
+input {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+  font-size: 15px;
+  width: 80%;            /* 80% fits perfectly inside left box */
+  margin-left: 0; 
+}
+
+/* BUTTON */
+.red-btn {
+  background: #e50914;
+  color: white;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  width: 85%;            /* slightly wider, looks nicer */
+  margin-left: 0;
+}
+
+.red-btn:hover { background: #ff1f27; }
+
+/* SWITCH */
+.switch { margin-top: 12px; }
+.switch span {
+  color: #e50914;
+  cursor: pointer;
+  font-weight: bold;
+}
