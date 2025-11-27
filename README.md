@@ -16,6 +16,8 @@ cd frontend
 ```
 npm install
 npm i react-router-dom
+npm install bootstrap
+
 ```
 
 5. Start development server
