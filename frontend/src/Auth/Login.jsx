@@ -9,7 +9,7 @@ export default function Login() {
   <div className={`main-box ${isRegister ? "active" : ""}`}>
 
     {/* LEFT SIDE - WHITE BOX */}
-    <div className="left-box">
+    <div className="glass-container">
 
       {/* LOGIN FORM */}
       <div className="form-box login">
