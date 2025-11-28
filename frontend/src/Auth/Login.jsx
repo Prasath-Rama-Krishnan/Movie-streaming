@@ -4,8 +4,8 @@ import "./Auth.css";
 export default function Login() {
   const [isRegister, setIsRegister] = useState(false);
 
-  return (
-   <div className="page-bg">
+  return (<>
+   <div className="page-bg"></div>
   <div className={`main-box ${isRegister ? "active" : ""}`}>
 
     {/* LEFT SIDE - WHITE BOX */}
@@ -50,7 +50,7 @@ export default function Login() {
     </div>
 
   </div>
-</div>
 
+</>
   );
 }
