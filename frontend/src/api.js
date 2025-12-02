@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://movie-streaming-men8.onrender.com/api/auth",
+  baseURL: "http://localhost:5000/api/auth",
 });
 
 export default API;
