@@ -1,8 +1,11 @@
-export default function Landing() {
+import Navbar from "./Components/Navbar";
+import Content from "./Components/Content";
+function Landing() {
   return (
-    <div style={{ textAlign: "center", marginTop: "150px" }}>
-      <h1>Welcome to Movie Streaming App 🎬</h1>
-      <p>You are logged in successfully!</p>
+    <div className="landing-page">
+      <Navbar />
+      <Content />
     </div>
-  );
-}
+  )
+};
+export default Landing;
