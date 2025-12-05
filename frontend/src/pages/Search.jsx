@@ -1,15 +1,16 @@
+import React from "react";
+import { useSearchParams, Link } from "react-router-dom";
 import Navbar from "../Components/Navbar";
-import getMovieData from "../Data/Data";
-import { useSearchParams } from "react-router-dom";
+import useMovies from "../hooks/useMovies";
+import "./Search.css";
 
 function Search() {
+  const movies = useMovies();
   const [searchParams] = useSearchParams();
   const query = (searchParams.get("q") || "").trim();
 
-  const { allMovies } = getMovieData(); 
-
   const results = query
-    ? allMovies.filter((movie) =>
+    ? movies.filter((movie) =>
         movie.name.toLowerCase().includes(query.toLowerCase())
       )
     : [];
@@ -17,27 +18,27 @@ function Search() {
   return (
     <div className="landing-page">
       <Navbar />
+
       <main className="content">
         <div className="content__section">
-          <header className="content__section-header">
-            <h2>
-              {query ? `Search results for "${query}"` : "Search for a movie"}
-            </h2>
-          </header>
+          <h2>
+            {query
+              ? `Search results for "${query}"`
+              : "Search for a movie"}
+          </h2>
 
-          {query && results.length === 0 && (
-            <p>No movies found matching your search.</p>
-          )}
+          {query && results.length === 0 && <p>No results found.</p>}
 
-          {results.length > 0 && (
-            <div className="content__carousel">
-              {results.map((movie) => (
-                <article key={movie.name} className="content__card">
+          <div className="content__carousel">
+            {results.map((movie) => (
+              <article key={movie._id} className="content__card">
+                <Link to={`/movie/${movie._id}`}>
+                  <img src={movie.posterUrl} alt={movie.name} />
                   <h3>{movie.name}</h3>
-                </article>
-              ))}
-            </div>
-          )}
+                </Link>
+              </article>
+            ))}
+          </div>
         </div>
       </main>
     </div>
@@ -45,5 +46,3 @@ function Search() {
 }
 
 export default Search;
-
-

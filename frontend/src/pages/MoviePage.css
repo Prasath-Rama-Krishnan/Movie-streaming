@@ -1,0 +1,32 @@
+.movie-page {
+  background-color: #000;
+  min-height: 100vh;
+  padding-bottom: 50px;
+  color: #fff;
+}
+
+.movie-content {
+  padding: 40px 60px;
+}
+
+.movie-content h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.movie-content p {
+  font-size: 17px;
+  margin-bottom: 20px;
+  color: #ccc;
+  max-width: 800px;
+}
+
+.movie-content video {
+  width: 100%;
+  max-width: 1000px;
+  border-radius: 10px;
+  outline: none;
+  border: 2px solid #222;
+  margin-top: 20px;
+}

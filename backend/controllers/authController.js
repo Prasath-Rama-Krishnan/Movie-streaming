@@ -1,14 +1,13 @@
-import User from "../models/User.js";
-import Otp from "../models/Otp.js";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import { sendEmail } from "../utils/sendEmail.js";
-
+const User = require("../models/User");
+const Otp = require("../models/Otp");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const sendEmail = require("../utils/sendEmail");
 
 // ------------------------------------------------------
-//  STEP 1: Register → Send OTP
+// STEP 1: Register → Send OTP
 // ------------------------------------------------------
-export const registerSendOtp = async (req, res) => {
+const registerSendOtp = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
@@ -43,12 +42,10 @@ export const registerSendOtp = async (req, res) => {
   }
 };
 
-
-
 // ------------------------------------------------------
-//  STEP 2: Verify OTP
+// STEP 2: Verify OTP
 // ------------------------------------------------------
-export const verifyOtp = async (req, res) => {
+const verifyOtp = async (req, res) => {
   try {
     const { email, otp } = req.body;
 
@@ -82,12 +79,10 @@ export const verifyOtp = async (req, res) => {
   }
 };
 
-
-
 // ------------------------------------------------------
-//  STEP 3: Login
+// STEP 3: Login
 // ------------------------------------------------------
-export const loginUser = async (req, res) => {
+const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -119,28 +114,26 @@ export const loginUser = async (req, res) => {
   }
 };
 
-
-
 // ------------------------------------------------------
-//  STEP 4: Resend OTP  (FIXED FULLY)
+// STEP 4: Resend OTP
 // ------------------------------------------------------
-export const resendOtp = async (req, res) => {
+const resendOtp = async (req, res) => {
   try {
     const { email } = req.body;
 
     if (!email)
       return res.status(400).json({ msg: "Email required" });
 
-    // Generate a new OTP
     const newOtp = Math.floor(100000 + Math.random() * 900000).toString();
 
     let record = await Otp.findOne({ email });
 
     if (!record) {
-      return res.status(400).json({ msg: "No registration in progress. Please register again." });
+      return res.status(400).json({
+        msg: "No registration in progress. Please register again."
+      });
     }
 
-    // UPDATE ONLY OTP, DO NOT REMOVE NAME OR PASSWORD
     record.otp = newOtp;
     record.createdAt = Date.now();
     await record.save();
@@ -153,4 +146,11 @@ export const resendOtp = async (req, res) => {
     console.log("RESEND OTP ERROR:", err);
     res.status(500).json({ msg: "Server error" });
   }
+};
+
+module.exports = {
+  registerSendOtp,
+  verifyOtp,
+  loginUser,
+  resendOtp,
 };
