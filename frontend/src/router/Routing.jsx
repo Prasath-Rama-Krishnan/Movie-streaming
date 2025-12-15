@@ -1,26 +1,62 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Landing from "../Landing";
-import MoviePage from "../pages/MoviePage";
-import Search from "../pages/Search";
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+
+import ProtectedRoute from "./ProtectedRoute";
 import Login from "../Auth/Login";
-import Register from "../Auth/Register";
+import OtpVerify from "../Auth/OtpVerify";
+import Landing from "../pages/Landing";
+import MoviePage from "../pages/MoviePage";
+import GenrePage from "../pages/GenrePage";
+import Search from "../pages/Search";
 
-function Routing() {
+export default function Routing() {
   return (
-    <BrowserRouter>
-      <Routes>
+    <Routes>
 
-        <Route path="/landing" element={<Landing />} />
-        <Route path="/movie/:id" element={<MoviePage />} />
-        <Route path="/search" element={<Search />} />
+      {/* DEFAULT ENTRY */}
+      <Route path="/" element={<Navigate to="/login" replace />} />
 
-        {/* Auth pages */}
-        <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+      {/* PUBLIC ROUTES */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/verify-otp" element={<OtpVerify />} />
 
-      </Routes>
-    </BrowserRouter>
+      {/* PROTECTED ROUTES */}
+      <Route
+        path="/home"
+        element={
+          <ProtectedRoute>
+            <Landing />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/movie/:id"
+        element={
+          <ProtectedRoute>
+            <MoviePage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/genre/:genre"
+        element={
+          <ProtectedRoute>
+            <GenrePage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/search"
+        element={
+          <ProtectedRoute>
+            <Search />
+          </ProtectedRoute>
+        }
+      />
+
+    </Routes>
   );
 }
-
-export default Routing;

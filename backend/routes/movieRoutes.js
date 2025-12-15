@@ -1,24 +1,34 @@
 const express = require("express");
 const router = express.Router();
-const upload = require("../utils/multer");
-const movieController = require("../controllers/movieController");
-const authMiddleware = require("../middleware/authMiddleware");
+const Movie = require("../models/Movie");
 
-// Upload movie (poster + video) – protected route
-router.post(
-  "/upload",
-  authMiddleware,
-  upload.fields([
-    { name: "poster", maxCount: 1 },
-    { name: "video", maxCount: 1 },
-  ]),
-  movieController.uploadMovie
-);
+/* GET ALL MOVIES */
+router.get("/", async (req, res) => {
+  const movies = await Movie.find();
+  res.json(movies);
+});
 
-// Get all movies
-router.get("/", movieController.getMovies);
+/* GET MOVIES BY GENRE */
+router.get("/genre/:genre", async (req, res) => {
+  const movies = await Movie.find({ genre: req.params.genre });
+  res.json(movies);
+});
 
-// Get a single movie
-router.get("/:id", movieController.getMovieById);
+/* SEARCH MOVIES */
+router.get("/search", async (req, res) => {
+  const { q } = req.query;
+
+  const movies = await Movie.find({
+    title: { $regex: q, $options: "i" },
+  });
+
+  res.json(movies);
+});
+
+/* GET MOVIE BY ID */
+router.get("/:id", async (req, res) => {
+  const movie = await Movie.findById(req.params.id);
+  res.json(movie);
+});
 
 module.exports = router;

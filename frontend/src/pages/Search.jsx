@@ -1,48 +1,33 @@
-import React from "react";
-import { useSearchParams, Link } from "react-router-dom";
-import Navbar from "../Components/Navbar";
-import useMovies from "../hooks/useMovies";
 import "./Search.css";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useMoviesApi } from "../hooks/useMovies";
+import MovieCard from "../Components/MovieCard";
 
-function Search() {
-  const movies = useMovies();
-  const [searchParams] = useSearchParams();
-  const query = (searchParams.get("q") || "").trim();
+const Search = () => {
+  const [params] = useSearchParams();
+  const query = params.get("q");
+  const { searchMovies } = useMoviesApi();
 
-  const results = query
-    ? movies.filter((movie) =>
-        movie.name.toLowerCase().includes(query.toLowerCase())
-      )
-    : [];
+  const [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    if (query) {
+      searchMovies(query).then(setMovies);
+    }
+  }, [query]);
 
   return (
-    <div className="landing-page">
-      <Navbar />
+    <div className="search-page">
+      <h2 className="search-title">Results for "{query}"</h2>
 
-      <main className="content">
-        <div className="content__section">
-          <h2>
-            {query
-              ? `Search results for "${query}"`
-              : "Search for a movie"}
-          </h2>
-
-          {query && results.length === 0 && <p>No results found.</p>}
-
-          <div className="content__carousel">
-            {results.map((movie) => (
-              <article key={movie._id} className="content__card">
-                <Link to={`/movie/${movie._id}`}>
-                  <img src={movie.posterUrl} alt={movie.name} />
-                  <h3>{movie.name}</h3>
-                </Link>
-              </article>
-            ))}
-          </div>
-        </div>
-      </main>
+      <div className="search-grid">
+        {movies.map((movie) => (
+          <MovieCard key={movie._id} movie={movie} />
+        ))}
+      </div>
     </div>
   );
-}
+};
 
 export default Search;

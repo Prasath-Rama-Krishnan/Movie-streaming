@@ -1,11 +1,16 @@
 const mongoose = require("mongoose");
 
-const authDB = mongoose.createConnection(process.env.MONGO_USER_DB, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const connectAuthDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_USER_DB, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("✅ Auth DB Connected");
+  } catch (err) {
+    console.error("❌ Auth DB Error:", err.message);
+    process.exit(1);
+  }
+};
 
-authDB.on("connected", () => console.log("✅ Auth DB Connected"));
-authDB.on("error", (err) => console.log("❌ Auth DB Error:", err));
-
-module.exports = authDB;
+module.exports = connectAuthDB;

@@ -1,17 +1,33 @@
-import { useEffect, useState } from "react";
+import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/movies"; 
-// change this when deploying
+const API = "http://localhost:5000/api/movies";
 
-export default function useMovies() {
-  const [movies, setMovies] = useState([]);
+export const useMoviesApi = () => {
 
-  useEffect(() => {
-    fetch(API_URL)
-      .then((res) => res.json())
-      .then((data) => setMovies(data))
-      .catch((err) => console.error("Movie fetch error:", err));
-  }, []);
+  const getAllMovies = async () => {
+    const res = await axios.get(`${API}`);
+    return res.data; // ARRAY
+  };
 
-  return movies;
-}
+  const getMoviesByGenre = async (genre) => {
+    const res = await axios.get(`${API}/genre/${genre}`);
+    return res.data; // ARRAY
+  };
+
+  const getMovieById = async (id) => {
+    const res = await axios.get(`${API}/${id}`);
+    return res.data; // OBJECT
+  };
+
+  const searchMovies = async (query) => {
+    const res = await axios.get(`${API}/search?q=${query}`);
+    return res.data; // ARRAY
+  };
+
+  return {
+    getAllMovies,
+    getMoviesByGenre,
+    getMovieById,
+    searchMovies,
+  };
+};

@@ -28,13 +28,15 @@ export default function Login() {
 
   // LOGIN API
   const handleLogin = async () => {
-    setLoginMsg("");    // clear previous message
+    setLoginMsg("");    
     try {
-      const res = await API.post("/login", loginData);
+      // FIXED URL
+      const res = await API.post("/auth/login", loginData);
 
       localStorage.setItem("token", res.data.token);
 
-      navigate("/landing");
+      // FIXED NAVIGATION
+      navigate("/home");
     } catch (err) {
       setLoginMsg(err.response?.data?.msg || "Login failed");
     }
@@ -42,9 +44,10 @@ export default function Login() {
 
   // REGISTER API
   const handleRegister = async () => {
-    setRegisterMsg("");  // clear previous msg
+    setRegisterMsg("");  
     try {
-      const res = await API.post("/register", regData);
+      // FIXED URL
+      const res = await API.post("/auth/register", regData);
 
       localStorage.setItem("pendingName", regData.name);
       localStorage.setItem("pendingEmail", regData.email);
@@ -67,19 +70,27 @@ export default function Login() {
           <div className="form-box login">
             <h1>Login</h1>
 
-            <input type="email" name="email" placeholder="Enter Email"
-              onChange={handleLoginChange} />
+            <input 
+              type="email" 
+              name="email" 
+              placeholder="Enter Email"
+              onChange={handleLoginChange} 
+            />
 
-            <input type="password" name="password" placeholder="Enter Password"
-              onChange={handleLoginChange} />
+            <input 
+              type="password" 
+              name="password" 
+              placeholder="Enter Password"
+              onChange={handleLoginChange} 
+            />
 
-            {/* LOGIN ERROR MESSAGE */}
             {loginMsg && <p className="error-msg">{loginMsg}</p>}
 
             <button className="red-btn" onClick={handleLogin}>Login</button>
 
             <p className="switch">
-              Don’t have an account? <span onClick={() => setIsRegister(true)}>Register</span>
+              Don’t have an account? 
+              <span onClick={() => setIsRegister(true)}>Register</span>
             </p>
           </div>
 
@@ -87,22 +98,34 @@ export default function Login() {
           <div className="form-box register">
             <h1>Create Account</h1>
 
-            <input type="text" name="name" placeholder="Full Name"
-              onChange={handleRegisterChange} />
+            <input 
+              type="text" 
+              name="name" 
+              placeholder="Full Name"
+              onChange={handleRegisterChange} 
+            />
 
-            <input type="email" name="email" placeholder="Enter Email"
-              onChange={handleRegisterChange} />
+            <input 
+              type="email" 
+              name="email" 
+              placeholder="Enter Email"
+              onChange={handleRegisterChange} 
+            />
 
-            <input type="password" name="password" placeholder="Enter Password"
-              onChange={handleRegisterChange} />
+            <input 
+              type="password" 
+              name="password" 
+              placeholder="Enter Password"
+              onChange={handleRegisterChange} 
+            />
 
-            {/* REGISTER ERROR MESSAGE */}
             {registerMsg && <p className="error-msg">{registerMsg}</p>}
 
             <button className="red-btn" onClick={handleRegister}>Register</button>
 
             <p className="switch">
-              Already have an account? <span onClick={() => setIsRegister(false)}>Login</span>
+              Already have an account? 
+              <span onClick={() => setIsRegister(false)}>Login</span>
             </p>
           </div>
 
@@ -120,6 +143,7 @@ export default function Login() {
             <p>Create an account to explore movies & series.</p>
           </div>
         </div>
+
       </div>
     </>
   );

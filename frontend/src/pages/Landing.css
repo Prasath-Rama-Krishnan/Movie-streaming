@@ -1,0 +1,52 @@
+.landing-container {
+  width: 100%;
+  padding: 30px 28px;
+  background: #000;
+  overflow-x: hidden;
+}
+
+/* GENRE SECTION */
+.section {
+  margin-bottom: 60px;
+}
+
+/* HEADER */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.section-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* VIEW MORE */
+.view-more {
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: #e50914;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* MOVIE GRID – NO SCROLL */
+.movie-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 26px;
+}
+.view-more {
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: #e50914;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}

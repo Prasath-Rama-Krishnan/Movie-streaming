@@ -1,32 +1,58 @@
 .movie-page {
-  background-color: #000;
-  min-height: 100vh;
-  padding-bottom: 50px;
+  width: 100%;
+  background: #000;
+  overflow-x: hidden;
+}
+
+/* VIDEO */
+.movie-video {
+  width: 100%;
+  height: 70vh;
+  object-fit: contain;   /* 🔥 NO OVERFLOW */
+  background: #000;
+  display: block;
+}
+
+/* TITLE */
+.movie-header {
+  padding: 20px 28px 10px;
+}
+
+.movie-header h1 {
+  font-size: 38px;
   color: #fff;
 }
 
-.movie-content {
-  padding: 40px 60px;
+.movie-meta {
+  font-size: 14px;
+  color: #aaa;
 }
 
-.movie-content h1 {
-  font-size: 32px;
+/* INFO */
+.movie-info {
+  display: flex;
+  gap: 30px;
+  padding: 30px 28px;
+  background: #0e0e0e;
+}
+
+.movie-poster {
+  width: 230px;
+  border-radius: 14px;
+}
+
+.movie-desc {
+  max-width: 650px;
+}
+
+.movie-desc h3 {
+  font-size: 22px;
   margin-bottom: 10px;
-  font-weight: bold;
+  color: #fff;
 }
 
-.movie-content p {
-  font-size: 17px;
-  margin-bottom: 20px;
-  color: #ccc;
-  max-width: 800px;
-}
-
-.movie-content video {
-  width: 100%;
-  max-width: 1000px;
-  border-radius: 10px;
-  outline: none;
-  border: 2px solid #222;
-  margin-top: 20px;
+.movie-desc p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #ddd;
 }

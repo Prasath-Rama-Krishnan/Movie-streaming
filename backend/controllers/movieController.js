@@ -1,59 +1,60 @@
+// controllers/movieController.js
 const Movie = require("../models/Movie");
-const cloudinary = require("../utils/cloudinary");
+const mongoose = require("mongoose");
 
-exports.uploadMovie = async (req, res) => {
+// GET all movies
+exports.getAllMovies = async (req, res) => {
   try {
-    const { name, description, category } = req.body;
-
-    if (!req.files.poster || !req.files.video) {
-      return res.status(400).json({ message: "Poster and video required" });
-    }
-
-    // Upload poster
-    const posterUpload = await cloudinary.uploader.upload(
-      req.files.poster[0].path,
-      { folder: "movie_posters" }
-    );
-
-    // Upload video
-    const videoUpload = await cloudinary.uploader.upload(
-      req.files.video[0].path,
-      {
-        resource_type: "video",
-        folder: "movie_videos",
-      }
-    );
-
-    const movie = await Movie.create({
-      name,
-      description,
-      category,
-      posterUrl: posterUpload.secure_url,
-      videoUrl: videoUpload.secure_url,
-    });
-
-    res.json({ message: "Movie uploaded successfully", movie });
-
-  } catch (error) {
-    console.error("Upload Error:", error);
-    res.status(500).json({ message: "Server error" });
+    const movies = await Movie.find().sort({ createdAt: -1 });
+    res.json({ results: movies });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };
 
-exports.getMovies = async (req, res) => {
+// GET movies by genre
+exports.getMoviesByGenre = async (req, res) => {
   try {
-    const movies = await Movie.find();
-    res.json(movies);
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    const { genre } = req.params;
+    const limit = parseInt(req.query.limit) || 0;
+
+    const movies = await Movie.find({ genre }).limit(limit);
+    res.json({ results: movies });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };
 
+// SEARCH movies
+exports.searchMovies = async (req, res) => {
+  try {
+    const q = req.query.q;
+    if (!q) return res.json({ results: [] });
+
+    const movies = await Movie.find(
+      { $text: { $search: q } },
+      { score: { $meta: "textScore" } }
+    ).sort({ score: { $meta: "textScore" } });
+
+    res.json({ results: movies });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// GET movie by id
 exports.getMovieById = async (req, res) => {
   try {
-    const movie = await Movie.findById(req.params.id);
+    const { id } = req.params;
+
+    if (!mongoose.isValidObjectId(id))
+      return res.status(400).json({ message: "Invalid ID" });
+
+    const movie = await Movie.findById(id);
+    if (!movie) return res.status(404).json({ message: "Movie not found" });
+
     res.json(movie);
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };

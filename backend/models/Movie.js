@@ -1,13 +1,24 @@
 const mongoose = require("mongoose");
 const movieDB = require("../config/movieDB");
 
-const MovieSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  description: String,
-  category: String,
-  posterUrl: String,     // Cloudinary image URL
-  videoUrl: String,      // Cloudinary video URL
-  createdAt: { type: Date, default: Date.now }
-});
+const MovieSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true },
+    year: Number,
+    genre: { type: String, required: true },
+    description: String,
+
+    videoUrl: String,
+    videoPublicId: String,
+
+    thumbnailUrl: String,
+    thumbnailPublicId: String,
+
+    createdAt: { type: Date, default: Date.now },
+  },
+  { versionKey: false }
+);
+
+MovieSchema.index({ title: "text", description: "text" });
 
 module.exports = movieDB.model("Movie", MovieSchema);

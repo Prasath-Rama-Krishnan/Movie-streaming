@@ -1,0 +1,27 @@
+.movie-card {
+  width: 100%;
+  background: #000;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.movie-card:hover {
+  transform: scale(1.04);
+}
+
+/* POSTER */
+.movie-card img {
+  width: 100%;
+  height: 260px;
+  object-fit: contain;      /* 🔥 FULL POSTER VISIBLE */
+  background: #000;         /* 🔥 NO WHITE */
+  border-radius: 14px;
+}
+
+/* TITLE */
+.movie-card h4 {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 15px;
+  color: #fff;
+}

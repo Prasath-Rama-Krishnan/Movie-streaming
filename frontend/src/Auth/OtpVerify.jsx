@@ -8,23 +8,20 @@ export default function OtpVerify() {
   const email = localStorage.getItem("pendingEmail");
 
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
-  const [timer, setTimer] = useState(30);         // 30 seconds timer
+  const [timer, setTimer] = useState(30);
   const [canResend, setCanResend] = useState(false);
 
   const inputRefs = useRef([]);
 
-  // TIMER HANDLER
   useEffect(() => {
     if (timer === 0) {
       setCanResend(true);
       return;
     }
-
     const t = setTimeout(() => setTimer(timer - 1), 1000);
     return () => clearTimeout(t);
   }, [timer]);
 
-  // OTP Box Change Handler
   const handleChange = (value, index) => {
     if (!/^[0-9]?$/.test(value)) return;
 
@@ -35,33 +32,32 @@ export default function OtpVerify() {
     if (value && index < 5) inputRefs.current[index + 1].focus();
   };
 
-  // Verify OTP API
+  // ✅ VERIFY OTP
   const verifyOtp = async () => {
     try {
       const finalOtp = otp.join("");
 
-      const res = await API.post("/verify-otp", {
+      await API.post("/auth/verify-otp", {
         email,
         otp: finalOtp,
       });
 
-      navigate("/");
+      navigate("/login");
     } catch (err) {
       alert(err.response?.data?.msg || "Invalid OTP");
     }
   };
 
-  // RESEND OTP FUNCTION
+  // ✅ RESEND OTP
   const resendOtp = async () => {
     try {
-      await API.post("/resend-otp", { email });
+      await API.post("/auth/resend-otp", { email });
 
       setTimer(30);
       setCanResend(false);
-
       alert("New OTP has been sent!");
     } catch (err) {
-      alert("Error sending OTP");
+      alert(err.response?.data?.msg || "Error sending OTP");
     }
   };
 
@@ -72,7 +68,6 @@ export default function OtpVerify() {
         <p>OTP sent to</p>
         <h3>{email}</h3>
 
-        {/* OTP INPUT ROW */}
         <div className="otp-input-group">
           {otp.map((digit, idx) => (
             <input
@@ -87,12 +82,10 @@ export default function OtpVerify() {
           ))}
         </div>
 
-        {/* VERIFY BUTTON */}
         <button className="verify-btn" onClick={verifyOtp}>
           Verify OTP
         </button>
 
-        {/* RESEND OTP SECTION */}
         <div style={{ marginTop: "15px", color: "white", fontSize: "15px" }}>
           {canResend ? (
             <span
