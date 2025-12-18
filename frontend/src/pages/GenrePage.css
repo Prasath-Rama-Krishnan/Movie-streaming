@@ -36,3 +36,10 @@
     gap: 18px;
   }
 }
+
+.empty-text {
+  text-align: center;
+  font-size: 18px;
+  color: #aaa;
+  margin-top: 40px;
+}

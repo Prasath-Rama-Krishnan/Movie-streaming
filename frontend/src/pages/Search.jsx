@@ -10,16 +10,26 @@ const Search = () => {
   const { searchMovies } = useMoviesApi();
 
   const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (query) {
-      searchMovies(query).then(setMovies);
+      setLoading(true);
+      searchMovies(query)
+        .then((data) => setMovies(data || []))
+        .finally(() => setLoading(false));
     }
   }, [query]);
 
   return (
     <div className="search-page">
       <h2 className="search-title">Results for "{query}"</h2>
+
+      {loading && <p className="empty-text">Loading...</p>}
+
+      {!loading && movies.length === 0 && (
+        <p className="empty-text">❌ No movies found</p>
+      )}
 
       <div className="search-grid">
         {movies.map((movie) => (

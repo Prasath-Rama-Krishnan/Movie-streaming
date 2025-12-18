@@ -8,20 +8,29 @@ router.get("/", async (req, res) => {
   res.json(movies);
 });
 
-/* GET MOVIES BY GENRE */
+/* GET MOVIES BY GENRE (WITH OPTIONAL LIMIT) */
 router.get("/genre/:genre", async (req, res) => {
-  const movies = await Movie.find({ genre: req.params.genre });
+  const limit = parseInt(req.query.limit) || 0;
+
+  const movies = await Movie.find({ genre: req.params.genre })
+    .limit(limit);
+
   res.json(movies);
 });
 
-/* SEARCH MOVIES */
+/* SEARCH MOVIES (GLOBAL + GENRE) */
 router.get("/search", async (req, res) => {
-  const { q } = req.query;
+  const { q, genre } = req.query;
 
-  const movies = await Movie.find({
-    title: { $regex: q, $options: "i" },
-  });
+  const filter = {
+    title: { $regex: q || "", $options: "i" },
+  };
 
+  if (genre) {
+    filter.genre = genre;
+  }
+
+  const movies = await Movie.find(filter);
   res.json(movies);
 });
 

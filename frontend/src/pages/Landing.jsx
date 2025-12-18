@@ -12,9 +12,9 @@ const Landing = () => {
 
   useEffect(() => {
     async function load() {
-      setEpic(await getMoviesByGenre("Epic"));
-      setComedy(await getMoviesByGenre("Comedy"));
-      setAction(await getMoviesByGenre("Action"));
+      setEpic(await getMoviesByGenre("Epic", 6));
+      setComedy(await getMoviesByGenre("Comedy", 6));
+      setAction(await getMoviesByGenre("Action", 6));
     }
     load();
   }, []);
