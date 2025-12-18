@@ -1,19 +1,38 @@
+/* Page container */
 .genre-page {
-  width: 100%;
-  padding: 30px 28px;
-  background: #000;
-  overflow-x: hidden;
+  background-color: #000;
+  min-height: 100vh;
+  padding: 30px 40px;
+  color: #ffffff;
+  font-family: "Segoe UI", Arial, sans-serif;
 }
 
+/* Genre title */
 .genre-title {
-  font-size: 32px;
+  font-size: 28px;
+  font-weight: 800;
   margin-bottom: 30px;
-  color: #fff;
+  letter-spacing: 0.6px;
 }
 
-/* GRID */
+/* Grid layout for movies */
 .genre-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 26px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 24px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .genre-page {
+    padding: 20px;
+  }
+
+  .genre-title {
+    font-size: 22px;
+  }
+
+  .genre-grid {
+    gap: 18px;
+  }
 }

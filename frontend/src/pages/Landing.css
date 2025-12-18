@@ -1,52 +1,75 @@
+/* Main page background */
 .landing-container {
-  width: 100%;
-  padding: 30px 28px;
-  background: #000;
-  overflow-x: hidden;
+  background-color: #000;
+  min-height: 100vh;
+  padding: 30px 40px;
+  color: #ffffff;
+  font-family: "Segoe UI", Arial, sans-serif;
 }
 
-/* GENRE SECTION */
+/* Section spacing */
 .section {
-  margin-bottom: 60px;
+  margin-bottom: 45px;
 }
 
-/* HEADER */
+/* Section header (title + view more) */
 .section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 22px;
+  margin-bottom: 16px;
 }
 
+/* Section title */
 .section-title {
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 700;
-  color: #fff;
+  letter-spacing: 0.4px;
 }
 
-/* VIEW MORE */
+/* View more link */
 .view-more {
-  padding: 8px 16px;
-  border-radius: 20px;
-  background: #e50914;
-  color: #fff;
   font-size: 14px;
   font-weight: 600;
+  color: #e50914;
   text-decoration: none;
+  transition: color 0.3s ease;
 }
 
-/* MOVIE GRID – NO SCROLL */
+.view-more:hover {
+  color: #ff3b3b;
+}
+
+/* Movie row layout */
 .movie-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 26px;
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scroll-behavior: smooth;
 }
-.view-more {
-  padding: 8px 16px;
-  border-radius: 20px;
-  background: #e50914;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
-  text-decoration: none;
+
+/* Scrollbar styling */
+.movie-row::-webkit-scrollbar {
+  height: 6px;
+}
+
+.movie-row::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.movie-row::-webkit-scrollbar-thumb {
+  background-color: #222;
+  border-radius: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .landing-container {
+    padding: 20px;
+  }
+
+  .section-title {
+    font-size: 18px;
+  }
 }

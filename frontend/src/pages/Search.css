@@ -1,20 +1,38 @@
+/* Page container */
 .search-page {
-  padding: 30px 28px;
-  background: #000;
+  background-color: #000;
+  min-height: 100vh;
+  padding: 30px 40px;
+  color: #ffffff;
+  font-family: "Segoe UI", Arial, sans-serif;
 }
 
+/* Page title */
 .search-title {
-  font-size: 26px;
-  margin-bottom: 25px;
-  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  letter-spacing: 0.4px;
 }
 
-.search-title span {
-  color: #e50914;
-}
-
+/* Grid layout for results */
 .search-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 26px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 24px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .search-page {
+    padding: 20px;
+  }
+
+  .search-title {
+    font-size: 20px;
+  }
+
+  .search-grid {
+    gap: 18px;
+  }
 }
