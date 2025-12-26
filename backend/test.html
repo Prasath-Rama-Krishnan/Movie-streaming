@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h3>Test Add Movie</h3>
+
+    <input
+      id="videoUrl"
+      style="width: 600px"
+      placeholder="Paste Cloudinary video URL"
+    />
+    <br /><br />
+
+    <button onclick="send()">Send</button>
+
+    <pre id="out"></pre>
+
+    <script>
+      async function send() {
+        const videoUrl = document.getElementById("videoUrl").value;
+
+        const res = await fetch("http://localhost:5000/api/movies/add-by-video", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ videoUrl }),
+        });
+
+        const data = await res.json();
+        document.getElementById("out").innerText =
+          JSON.stringify(data, null, 2);
+      }
+    </script>
+  </body>
+</html>

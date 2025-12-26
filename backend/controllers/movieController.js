@@ -1,60 +1,179 @@
-// controllers/movieController.js
 const Movie = require("../models/Movie");
-const mongoose = require("mongoose");
+const fetchMovieFromOMDb = require("../services/omdbService");
 
-// GET all movies
+/* =========================
+   GENRE RESOLUTION (CORE FIX)
+========================= */
+const resolvePrimaryGenre = (genreString = "") => {
+  const genres = genreString
+    .split(",")
+    .map(g => g.trim().toLowerCase());
+
+  const priority = [
+    "action",
+    "romance",
+    "comedy",
+    "thriller",
+    "crime",
+    "drama",
+    "musical",
+    "fantasy",
+    "adventure",
+  ];
+
+  for (const p of priority) {
+    if (genres.includes(p)) {
+      return p.charAt(0).toUpperCase() + p.slice(1);
+    }
+  }
+
+  return "Other";
+};
+
+/* =========================
+   TITLE NORMALIZATION
+========================= */
+const normalizeTitle = (rawTitle) => {
+  const searchTitle = rawTitle.trim();
+
+  const displayTitle = rawTitle
+    .replace(/\(Tamil\)/gi, "")
+    .replace(/\(Hindi\)/gi, "")
+    .replace(/\(Telugu\)/gi, "")
+    .replace(/\(USA\)/gi, "")
+    .replace(/\(\d{4}\)/g, "")
+    .trim();
+
+  return { searchTitle, displayTitle };
+};
+
+/* =========================
+   GET ALL MOVIES
+========================= */
 exports.getAllMovies = async (req, res) => {
   try {
     const movies = await Movie.find().sort({ createdAt: -1 });
     res.json({ results: movies });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  } catch {
+    res.status(500).json({ message: "Failed to fetch movies" });
   }
 };
 
-// GET movies by genre
-exports.getMoviesByGenre = async (req, res) => {
-  try {
-    const { genre } = req.params;
-    const limit = parseInt(req.query.limit) || 0;
-
-    const movies = await Movie.find({ genre }).limit(limit);
-    res.json({ results: movies });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
-// SEARCH movies
-exports.searchMovies = async (req, res) => {
-  try {
-    const q = req.query.q;
-    if (!q) return res.json({ results: [] });
-
-    const movies = await Movie.find(
-      { $text: { $search: q } },
-      { score: { $meta: "textScore" } }
-    ).sort({ score: { $meta: "textScore" } });
-
-    res.json({ results: movies });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
-// GET movie by id
+/* =========================
+   GET MOVIE BY ID
+========================= */
 exports.getMovieById = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    if (!mongoose.isValidObjectId(id))
-      return res.status(400).json({ message: "Invalid ID" });
-
-    const movie = await Movie.findById(id);
+    const movie = await Movie.findById(req.params.id);
     if (!movie) return res.status(404).json({ message: "Movie not found" });
-
     res.json(movie);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  } catch {
+    res.status(500).json({ message: "Failed to fetch movie" });
+  }
+};
+
+/* =========================
+   SEARCH MOVIES
+========================= */
+exports.searchMovies = async (req, res) => {
+  try {
+    const { q } = req.query;
+    if (!q) return res.json({ results: [] });
+
+    const movies = await Movie.find({
+      title: { $regex: q, $options: "i" },
+    });
+
+    res.json({ results: movies });
+  } catch {
+    res.status(500).json({ message: "Search failed" });
+  }
+};
+
+/* =========================
+   GET MOVIES BY GENRE
+   (USES primaryGenre)
+========================= */
+exports.getMoviesByGenre = async (req, res) => {
+  try {
+    const genre = req.params.genre;
+    const movies = await Movie.find({ primaryGenre: genre });
+    res.json({ results: movies });
+  } catch {
+    res.status(500).json({ message: "Failed to fetch movies by genre" });
+  }
+};
+
+/* =========================
+   MANUAL ADD
+========================= */
+exports.addMovieByVideoUrl = async (req, res) => {
+  try {
+    const { videoUrl } = req.body;
+    if (!videoUrl) return res.status(400).json({ message: "videoUrl required" });
+
+    const fileName = videoUrl.split("/").pop();
+    const rawTitle = decodeURIComponent(fileName.replace(/\.[^/.]+$/, ""));
+    const { searchTitle, displayTitle } = normalizeTitle(rawTitle);
+
+    const exists = await Movie.findOne({ videoUrl });
+    if (exists) return res.json({ message: "Movie already exists" });
+
+    const movie = await Movie.create({
+      title: displayTitle,
+      videoUrl,
+    });
+
+    const omdbData = await fetchMovieFromOMDb(searchTitle);
+    if (omdbData) {
+      movie.genre = omdbData.genre;
+      movie.primaryGenre = resolvePrimaryGenre(omdbData.genre);
+      movie.description = omdbData.description;
+      movie.posterUrl = omdbData.posterUrl;
+      movie.year = omdbData.year;
+      await movie.save();
+    }
+
+    res.json({ message: "Movie added", movie });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+/* =========================
+   CLOUDINARY WEBHOOK
+========================= */
+exports.cloudinaryWebhook = async (req, res) => {
+  try {
+    const { secure_url, resource_type } = req.body;
+    if (resource_type !== "video") return res.sendStatus(200);
+
+    const exists = await Movie.findOne({ videoUrl: secure_url });
+    if (exists) return res.sendStatus(200);
+
+    const fileName = secure_url.split("/").pop();
+    const rawTitle = decodeURIComponent(fileName.replace(/\.[^/.]+$/, ""));
+    const { searchTitle, displayTitle } = normalizeTitle(rawTitle);
+
+    const movie = await Movie.create({
+      title: displayTitle,
+      videoUrl: secure_url,
+    });
+
+    const omdbData = await fetchMovieFromOMDb(searchTitle);
+    if (omdbData) {
+      movie.genre = omdbData.genre;
+      movie.primaryGenre = resolvePrimaryGenre(omdbData.genre);
+      movie.description = omdbData.description;
+      movie.posterUrl = omdbData.posterUrl;
+      movie.year = omdbData.year;
+      await movie.save();
+    }
+
+    console.log(`🎬 Added: ${displayTitle} → ${movie.primaryGenre}`);
+    res.sendStatus(200);
+  } catch (error) {
+    console.error("Webhook failed:", error.message);
+    res.status(500).send("Webhook failed");
   }
 };

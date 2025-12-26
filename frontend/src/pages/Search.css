@@ -1,38 +1,30 @@
-/* Page container */
 .search-page {
-  background-color: #000;
+  background: #000;
   min-height: 100vh;
   padding: 30px 40px;
-  color: #ffffff;
-  font-family: "Segoe UI", Arial, sans-serif;
 }
 
-/* Page title */
-.search-title {
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 30px;
-  letter-spacing: 0.4px;
+.search-page h2 {
+  color: #fff;
+  margin-bottom: 25px;
 }
 
-/* Grid layout for results */
-.search-grid {
+/* Grid */
+.search-grid,
+.movie-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 24px;
 }
 
-/* Responsive */
+/* Mobile */
 @media (max-width: 768px) {
   .search-page {
     padding: 20px;
   }
 
-  .search-title {
-    font-size: 20px;
-  }
-
-  .search-grid {
+  .search-grid,
+  .movie-grid {
     gap: 18px;
   }
 }

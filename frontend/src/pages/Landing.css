@@ -1,55 +1,54 @@
-/* Main page background */
-.landing-container {
+/* =========================
+   LANDING PAGE BASE
+========================= */
+.landing {
   background-color: #000;
   min-height: 100vh;
   padding: 30px 40px;
-  color: #ffffff;
-  font-family: "Segoe UI", Arial, sans-serif;
 }
 
-/* Section spacing */
-.section {
-  margin-bottom: 45px;
-}
-
-/* Section header (title + view more) */
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-/* Section title */
+/* =========================
+   SECTION TITLE ROW
+========================= */
 .section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  color: #ffffff;
   font-size: 22px;
   font-weight: 700;
-  letter-spacing: 0.4px;
+
+  margin: 30px 0 18px;
 }
 
-/* View more link */
-.view-more {
-  font-size: 14px;
-  font-weight: 600;
+/* =========================
+   SEE MORE LINK
+========================= */
+.see-more {
   color: #e50914;
-  text-decoration: none;
-  transition: color 0.3s ease;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
-.view-more:hover {
+.see-more:hover {
   color: #ff3b3b;
+  transform: translateX(4px);
 }
 
-/* Movie row layout */
+/* =========================
+   MOVIE ROW (HORIZONTAL)
+========================= */
 .movie-row {
   display: flex;
   gap: 18px;
   overflow-x: auto;
   padding-bottom: 10px;
-  scroll-behavior: smooth;
 }
 
-/* Scrollbar styling */
+/* Hide scrollbar background */
 .movie-row::-webkit-scrollbar {
   height: 6px;
 }
@@ -59,17 +58,23 @@
 }
 
 .movie-row::-webkit-scrollbar-thumb {
-  background-color: #222;
+  background: rgba(255, 255, 255, 0.25);
   border-radius: 10px;
 }
 
-/* Responsive adjustments */
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
 @media (max-width: 768px) {
-  .landing-container {
+  .landing {
     padding: 20px;
   }
 
   .section-title {
     font-size: 18px;
+  }
+
+  .see-more {
+    font-size: 13px;
   }
 }

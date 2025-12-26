@@ -1,36 +1,41 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const connectDB = require("./config/db");
 
-const connectAuthDB = require("./config/authDB");
-
-// movieDB is auto-connected by createConnection
-require("./config/movieDB");
-
+// ROUTES
 const authRoutes = require("./routes/authRoutes");
 const movieRoutes = require("./routes/movieRoutes");
 
 const app = express();
 
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true,
-}));
-
+/* ===========================
+   MIDDLEWARE
+=========================== */
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// routes
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
+
+/* ===========================
+   ROUTES
+=========================== */
 app.use("/api/auth", authRoutes);
 app.use("/api/movies", movieRoutes);
 
-app.get("/", (req, res) => {
-  res.send("🎬 Backend running");
-});
-
+/* ===========================
+   SERVER
+=========================== */
 const PORT = process.env.PORT || 5000;
 
-connectAuthDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
-  });
+// ✅ CONNECT DB
+connectDB();
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });

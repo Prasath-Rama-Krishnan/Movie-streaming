@@ -1,40 +1,41 @@
-import "./Search.css";
-import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useMoviesApi } from "../hooks/useMovies";
 import MovieCard from "../Components/MovieCard";
+import "./Search.css";
 
 const Search = () => {
   const [params] = useSearchParams();
-  const query = params.get("q");
+  const query = params.get("q") || "";
   const { searchMovies } = useMoviesApi();
-
   const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (query) {
-      setLoading(true);
-      searchMovies(query)
-        .then((data) => setMovies(data || []))
-        .finally(() => setLoading(false));
+    if (!query) {
+      setMovies([]);
+      return;
     }
+
+    const load = async () => {
+      const results = await searchMovies(query);
+      setMovies(results);
+    };
+
+    load();
   }, [query]);
 
   return (
     <div className="search-page">
-      <h2 className="search-title">Results for "{query}"</h2>
+      <h2>Search results for "{query}"</h2>
 
-      {loading && <p className="empty-text">Loading...</p>}
-
-      {!loading && movies.length === 0 && (
-        <p className="empty-text">❌ No movies found</p>
-      )}
-
-      <div className="search-grid">
-        {movies.map((movie) => (
-          <MovieCard key={movie._id} movie={movie} />
-        ))}
+      <div className="movie-grid">
+        {movies.length ? (
+          movies.map(movie => (
+            <MovieCard key={movie._id} movie={movie} />
+          ))
+        ) : (
+          <p>No movies found</p>
+        )}
       </div>
     </div>
   );

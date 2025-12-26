@@ -1,48 +1,69 @@
 import "./Landing.css";
 import { useEffect, useState } from "react";
-import MovieCard from "../Components/MovieCard";
+import { useNavigate } from "react-router-dom";
 import { useMoviesApi } from "../hooks/useMovies";
+import MovieCard from "../Components/MovieCard";
 
 const Landing = () => {
-  const { getMoviesByGenre } = useMoviesApi();
+  const { getAllMovies } = useMoviesApi();
+  const navigate = useNavigate();
 
-  const [epic, setEpic] = useState([]);
-  const [comedy, setComedy] = useState([]);
   const [action, setAction] = useState([]);
+  const [romance, setRomance] = useState([]);
+  const [comedy, setComedy] = useState([]);
 
   useEffect(() => {
-    async function load() {
-      setEpic(await getMoviesByGenre("Epic", 6));
-      setComedy(await getMoviesByGenre("Comedy", 6));
-      setAction(await getMoviesByGenre("Action", 6));
-    }
+    const load = async () => {
+      const all = await getAllMovies();
+
+      const byGenre = (g) =>
+        all.filter(
+          (m) =>
+            m.primaryGenre &&
+            m.primaryGenre.toLowerCase() === g.toLowerCase()
+        );
+
+      setAction(byGenre("Action").slice(0, 6));
+      setRomance(byGenre("Romance").slice(0, 6));
+      setComedy(byGenre("Comedy").slice(0, 6));
+    };
+
     load();
   }, []);
 
   return (
-    <div className="landing-container">
-      <Section title="🔥 Epic Movies" movies={epic} genre="Epic" />
-      <Section title="😂 Comedy Movies" movies={comedy} genre="Comedy" />
-      <Section title="💥 Action Movies" movies={action} genre="Action" />
+    <div className="landing">
+      <h2 className="section-title">
+        💥 Action Movies
+        <span className="see-more" onClick={() => navigate("/genre/Action")}>
+          See more →
+        </span>
+      </h2>
+      <div className="movie-row">
+        {action.map((m) => <MovieCard key={m._id} movie={m} />)}
+      </div>
+
+      <h2 className="section-title">
+        ❤️ Romantic Movies
+        <span className="see-more" onClick={() => navigate("/genre/Romance")}>
+          See more →
+        </span>
+      </h2>
+      <div className="movie-row">
+        {romance.map((m) => <MovieCard key={m._id} movie={m} />)}
+      </div>
+
+      <h2 className="section-title">
+        😂 Comedy Movies
+        <span className="see-more" onClick={() => navigate("/genre/Comedy")}>
+          See more →
+        </span>
+      </h2>
+      <div className="movie-row">
+        {comedy.map((m) => <MovieCard key={m._id} movie={m} />)}
+      </div>
     </div>
   );
 };
-
-const Section = ({ title, movies, genre }) => (
-  <div className="section">
-    <div className="section-header">
-      <h2 className="section-title">{title}</h2>
-      <a href={`/genre/${genre}`} className="view-more">
-        View More →
-      </a>
-    </div>
-
-    <div className="movie-row">
-      {movies.map((movie) => (
-        <MovieCard key={movie._id} movie={movie} />
-      ))}
-    </div>
-  </div>
-);
 
 export default Landing;

@@ -1,24 +1,23 @@
 const mongoose = require("mongoose");
-const movieDB = require("../config/movieDB");
 
 const MovieSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
-    year: Number,
-    genre: { type: String, required: true },
+    videoUrl: { type: String, required: true },
+
     description: String,
+    year: String,
 
-    videoUrl: String,
-    videoPublicId: String,
+    genre: String,              // Full OMDb genre string
+    primaryGenre: String,       // ✅ THIS WAS MISSING
 
-    thumbnailUrl: String,
-    thumbnailPublicId: String,
-
-    createdAt: { type: Date, default: Date.now },
+    posterUrl: String,
+    director: String,
+    actors: String,
+    imdbRating: String,
+    language: String,
   },
-  { versionKey: false }
+  { timestamps: true }
 );
 
-MovieSchema.index({ title: "text", description: "text" });
-
-module.exports = movieDB.model("Movie", MovieSchema);
+module.exports = mongoose.model("Movie", MovieSchema);

@@ -17,32 +17,31 @@ const MoviePage = () => {
   return (
     <div className="movie-page">
 
-      {/* FULL WIDTH VIDEO FIRST */}
-      <video
-        className="movie-video"
-        src={movie.videoUrl}
-        controls
-      />
+      {/* 🎬 CLOUDINARY VIDEO */}
+      {movie.videoUrl ? (
+        <video
+          src={movie.videoUrl}
+          controls
+          width="100%"
+          height="450"
+        />
+      ) : (
+        <p style={{ color: "gray" }}>Video not available</p>
+      )}
 
-      {/* TITLE SECTION */}
-      <div className="movie-header">
-        <h1>{movie.title}</h1>
-        <span className="movie-meta">
-          {movie.year} • 2h 15m
-        </span>
-      </div>
-
-      {/* POSTER + CONTENT */}
+      {/* 🎞️ MOVIE DETAILS */}
       <div className="movie-info">
         <img
-          src={movie.thumbnailUrl}
-          className="movie-poster"
+          src={movie.posterUrl || "https://via.placeholder.com/300x450"}
           alt={movie.title}
+          className="movie-poster"
         />
 
         <div className="movie-desc">
-          <h3>About the movie</h3>
-          <p>{movie.description}</p>
+          <h1>{movie.title}</h1>
+          <p>{movie.description || "No description available"}</p>
+          <p><b>Genre:</b> {movie.genre}</p>
+          <p><b>Year:</b> {movie.year}</p>
         </div>
       </div>
 

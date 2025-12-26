@@ -7,6 +7,7 @@ const Navbar = () => {
   const location = useLocation();
   const [query, setQuery] = useState("");
 
+  // 🔍 SEARCH HANDLER
   const handleSearch = (e) => {
     if (e.key === "Enter" && query.trim()) {
       if (location.pathname.startsWith("/genre/")) {
@@ -18,6 +19,7 @@ const Navbar = () => {
     }
   };
 
+  // 🔐 LOGOUT HANDLER (RESTORED)
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
@@ -40,9 +42,11 @@ const Navbar = () => {
         />
       </div>
 
-      <button className="logout-btn" onClick={handleLogout}>
-        Logout
-      </button>
+      <div className="nav-right">
+        <button className="logout-btn" onClick={handleLogout}>
+          Logout
+        </button>
+      </div>
     </div>
   );
 };
