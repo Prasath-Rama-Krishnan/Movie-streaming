@@ -2,7 +2,7 @@ const Movie = require("../models/Movie");
 const fetchMovieFromOMDb = require("../services/omdbService");
 
 /* =========================
-   GENRE RESOLUTION (CORE FIX)
+   GENRE RESOLUTION
 ========================= */
 const resolvePrimaryGenre = (genreString = "") => {
   const genres = genreString
@@ -52,7 +52,7 @@ const normalizeTitle = (rawTitle) => {
 ========================= */
 exports.getAllMovies = async (req, res) => {
   try {
-    const movies = await Movie.find().sort({ createdAt: -1 });
+    const movies = await Movie.find().sort({ createdAt: -1 }).lean();
     res.json({ results: movies });
   } catch {
     res.status(500).json({ message: "Failed to fetch movies" });
@@ -64,7 +64,7 @@ exports.getAllMovies = async (req, res) => {
 ========================= */
 exports.getMovieById = async (req, res) => {
   try {
-    const movie = await Movie.findById(req.params.id);
+    const movie = await Movie.findById(req.params.id).lean();
     if (!movie) return res.status(404).json({ message: "Movie not found" });
     res.json(movie);
   } catch {
@@ -82,7 +82,7 @@ exports.searchMovies = async (req, res) => {
 
     const movies = await Movie.find({
       title: { $regex: q, $options: "i" },
-    });
+    }).lean();
 
     res.json({ results: movies });
   } catch {
@@ -92,12 +92,13 @@ exports.searchMovies = async (req, res) => {
 
 /* =========================
    GET MOVIES BY GENRE
-   (USES primaryGenre)
 ========================= */
 exports.getMoviesByGenre = async (req, res) => {
   try {
-    const genre = req.params.genre;
-    const movies = await Movie.find({ primaryGenre: genre });
+    const movies = await Movie.find({
+      primaryGenre: req.params.genre,
+    }).lean();
+
     res.json({ results: movies });
   } catch {
     res.status(500).json({ message: "Failed to fetch movies by genre" });
@@ -105,55 +106,27 @@ exports.getMoviesByGenre = async (req, res) => {
 };
 
 /* =========================
-   MANUAL ADD
-========================= */
-exports.addMovieByVideoUrl = async (req, res) => {
-  try {
-    const { videoUrl } = req.body;
-    if (!videoUrl) return res.status(400).json({ message: "videoUrl required" });
-
-    const fileName = videoUrl.split("/").pop();
-    const rawTitle = decodeURIComponent(fileName.replace(/\.[^/.]+$/, ""));
-    const { searchTitle, displayTitle } = normalizeTitle(rawTitle);
-
-    const exists = await Movie.findOne({ videoUrl });
-    if (exists) return res.json({ message: "Movie already exists" });
-
-    const movie = await Movie.create({
-      title: displayTitle,
-      videoUrl,
-    });
-
-    const omdbData = await fetchMovieFromOMDb(searchTitle);
-    if (omdbData) {
-      movie.genre = omdbData.genre;
-      movie.primaryGenre = resolvePrimaryGenre(omdbData.genre);
-      movie.description = omdbData.description;
-      movie.posterUrl = omdbData.posterUrl;
-      movie.year = omdbData.year;
-      await movie.save();
-    }
-
-    res.json({ message: "Movie added", movie });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-/* =========================
    CLOUDINARY WEBHOOK
+   (DUPLICATE SAFE BY TITLE)
 ========================= */
 exports.cloudinaryWebhook = async (req, res) => {
   try {
     const { secure_url, resource_type } = req.body;
     if (resource_type !== "video") return res.sendStatus(200);
 
-    const exists = await Movie.findOne({ videoUrl: secure_url });
-    if (exists) return res.sendStatus(200);
-
     const fileName = secure_url.split("/").pop();
     const rawTitle = decodeURIComponent(fileName.replace(/\.[^/.]+$/, ""));
     const { searchTitle, displayTitle } = normalizeTitle(rawTitle);
+
+    // ✅ Prevent duplicate movies by title
+    const exists = await Movie.findOne({
+      title: new RegExp(`^${displayTitle}$`, "i"),
+    });
+
+    if (exists) {
+      console.log("⛔ Duplicate ignored:", displayTitle);
+      return res.sendStatus(200);
+    }
 
     const movie = await Movie.create({
       title: displayTitle,
@@ -167,6 +140,7 @@ exports.cloudinaryWebhook = async (req, res) => {
       movie.description = omdbData.description;
       movie.posterUrl = omdbData.posterUrl;
       movie.year = omdbData.year;
+      movie.language = omdbData.language;
       await movie.save();
     }
 

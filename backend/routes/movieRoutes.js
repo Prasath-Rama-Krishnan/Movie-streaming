@@ -6,22 +6,18 @@ const {
   getMovieById,
   getMoviesByGenre,
   searchMovies,
-  addMovieByVideoUrl,
   cloudinaryWebhook,
 } = require("../controllers/movieController");
 
-// ✅ SEARCH FIRST
+// SEARCH FIRST
 router.get("/search", searchMovies);
 
-// ✅ FETCH MOVIES
+// FETCH MOVIES
 router.get("/", getAllMovies);
 router.get("/genre/:genre", getMoviesByGenre);
 router.get("/:id", getMovieById);
 
-// OPTIONAL
-router.post("/add-by-video", addMovieByVideoUrl);
-
-// WEBHOOK
+// CLOUDINARY WEBHOOK
 router.post("/cloudinary-webhook", cloudinaryWebhook);
 
 module.exports = router;

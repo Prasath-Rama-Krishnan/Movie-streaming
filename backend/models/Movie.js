@@ -8,8 +8,8 @@ const MovieSchema = new mongoose.Schema(
     description: String,
     year: String,
 
-    genre: String,              // Full OMDb genre string
-    primaryGenre: String,       // ✅ THIS WAS MISSING
+    genre: String,          // Full OMDb genre string
+    primaryGenre: String,   // ✅ Used by frontend
 
     posterUrl: String,
     director: String,
