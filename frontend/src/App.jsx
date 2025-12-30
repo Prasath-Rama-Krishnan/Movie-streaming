@@ -7,6 +7,7 @@ import Landing from "./pages/Landing";
 import GenrePage from "./pages/GenrePage";
 import MoviePage from "./pages/MoviePage";
 import Search from "./pages/Search";
+import Profile from "./pages/Profile";
 
 import ProtectedRoute from "./router/ProtectedRoute";
 import AppLayout from "./layout/AppLayout";
@@ -27,10 +28,13 @@ function App() {
         }
       >
         <Route path="/" element={<Landing />} />
-        <Route path="/home" element={<Landing />} /> {/* ✅ FIX */}
+        <Route path="/home" element={<Landing />} />
         <Route path="/genre/:genre" element={<GenrePage />} />
         <Route path="/movie/:id" element={<MoviePage />} />
         <Route path="/search" element={<Search />} />
+
+        {/* ✅ NEW PROFILE PAGE */}
+        <Route path="/profile" element={<Profile />} />
       </Route>
 
       {/* FALLBACK */}

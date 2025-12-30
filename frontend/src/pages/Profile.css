@@ -1,0 +1,72 @@
+/* ===== PROFILE PAGE (DARK THEME) ===== */
+
+.profile-container {
+  min-height: 100vh;
+  padding: 24px;
+  background-color: #0f0f0f;
+  color: #ffffff;
+}
+
+/* ===== USER INFO ===== */
+
+.profile-header {
+  margin-bottom: 28px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #222;
+}
+
+.profile-header h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.profile-header p {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #b3b3b3;
+}
+
+/* ===== WATCH LATER ===== */
+
+.watchlater-title {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 14px;
+  color: #ffffff;
+}
+
+.watchlater-grid {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.watchlater-empty {
+  color: #8c8c8c;
+  font-size: 15px;
+  margin-top: 10px;
+}
+
+/* ===== REMOVE BUTTON (PROFILE ONLY) ===== */
+
+.watchlater-item {
+  position: relative;
+}
+
+.remove-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #ffffff;
+  border: none;
+  font-size: 12px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.remove-btn:hover {
+  background: #e50914;
+}

@@ -27,6 +27,7 @@ app.use(
 =========================== */
 app.use("/api/auth", authRoutes);
 app.use("/api/movies", movieRoutes);
+app.use("/api/user", require("./routes/userRoutes"));
 
 /* ===========================
    SERVER

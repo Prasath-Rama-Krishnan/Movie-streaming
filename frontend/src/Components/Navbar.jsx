@@ -19,7 +19,7 @@ const Navbar = () => {
     }
   };
 
-  // 🔐 LOGOUT HANDLER (RESTORED)
+  // 🔐 LOGOUT HANDLER
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
@@ -30,6 +30,7 @@ const Navbar = () => {
       <div className="nav-left">
         <span className="nav-brand">🎬 CineStream</span>
         <Link className="nav-link" to="/home">Home</Link>
+        <Link className="nav-link" to="/profile">Profile</Link>
       </div>
 
       <div className="search-box">
