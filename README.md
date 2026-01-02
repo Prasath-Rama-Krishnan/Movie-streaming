@@ -3,7 +3,7 @@
 A full-stack **Movie Streaming Web Application** built using modern web technologies.  
 This project enables users to **register/login using OTP**, **browse/search movies**, **view movie details**, **stream video content**, and **manage a watchlist**, all with a responsive and interactive UI.
 
-Live Preview: https://movie-streaming-ten.vercel.app/ :contentReference[oaicite:0]{index=0}
+
 
 ---
 
@@ -30,7 +30,7 @@ The system is built as a **Single Page Application (SPA)** with a Node.js backen
 | Backend | Node.js, Express.js |
 | Database | MongoDB |
 | Media Storage | Cloudinary |
-| Styling | Bootstrap / CSS |
+| Styling |  CSS |
 
 ---
 
