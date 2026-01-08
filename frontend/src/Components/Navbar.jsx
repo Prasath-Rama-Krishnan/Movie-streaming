@@ -36,7 +36,7 @@ const Navbar = () => {
       <div className="search-box">
         <input
           type="text"
-          placeholder="Search movies..."
+          placeholder="Search movies by title..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleSearch}
