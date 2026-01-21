@@ -1,0 +1,4 @@
+email,password,expectedStatus
+prasathramakrishnan005@gmail.com,prasath005,400
+logendiran2005@gmail.com,wrongpass,400
+wronguser@gmail.com,Test@123,401
