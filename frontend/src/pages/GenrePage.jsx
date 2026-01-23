@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useMoviesApi } from "../hooks/useMovies";
 import MovieCard from "../Components/MovieCard";
@@ -6,29 +6,42 @@ import "./GenrePage.css";
 
 const GenrePage = () => {
   const { genre } = useParams();
-  const { getAllMovies } = useMoviesApi();
+  const [params] = useSearchParams();
+  const query = params.get("q") || "";
+
+  const { getMoviesByGenre } = useMoviesApi();
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
     const load = async () => {
-      const all = await getAllMovies();
-      setMovies(
-        all.filter(
-          (m) =>
-            m.primaryGenre &&
-            m.primaryGenre.toLowerCase() === genre.toLowerCase()
-        )
-      );
+      // ✅ get movies of this genre ONLY
+      let data = await getMoviesByGenre(genre);
+
+      // ✅ ADD: search inside genre
+      if (query) {
+        data = data.filter((m) =>
+          m.title.toLowerCase().includes(query.toLowerCase())
+        );
+      }
+
+      setMovies(data || []);
     };
 
     load();
-  }, [genre]);
+  }, [genre, query]);
 
   return (
     <div className="genre-page">
       <h2>{genre} Movies</h2>
+
       <div className="movie-grid">
-        {movies.map((m) => <MovieCard key={m._id} movie={m} />)}
+        {movies.length > 0 ? (
+          movies.map((movie) => (
+            <MovieCard key={movie._id} movie={movie} />
+          ))
+        ) : (
+          <p>No movies found</p>
+        )}
       </div>
     </div>
   );
