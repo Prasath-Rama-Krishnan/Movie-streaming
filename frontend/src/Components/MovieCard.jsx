@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { addWatchLater } from "../api/userApi";
 
 const FALLBACK =
-  "https://via.placeholder.com/300x450/111/ffffff?text=No+Poster";
+  "https://dummyimage.com/300x450/111/fff&text=No+Poster";
 
 const MovieCard = ({ movie }) => {
   const navigate = useNavigate();
