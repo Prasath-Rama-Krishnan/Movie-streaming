@@ -18,7 +18,7 @@
       async function send() {
         const videoUrl = document.getElementById("videoUrl").value;
 
-        const res = await fetch("http://localhost:5000/api/movies/add-by-video", {
+const res = await fetch("https://movie-streaming-men8.onrender.com/api/movies/add-by-video", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ videoUrl }),

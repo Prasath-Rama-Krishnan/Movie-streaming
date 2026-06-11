@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://localhost:5000/api/movies";
+const API = "https://movie-streaming-men8.onrender.com/api/movies";
 
 export const useMoviesApi = () => {
 
