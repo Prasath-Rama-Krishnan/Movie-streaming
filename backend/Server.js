@@ -15,9 +15,22 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const FRONTEND_URL = process.env.FRONTEND_URL || "https://movie-streaming-ten.vercel.app";
+const allowedOrigins = [
+  FRONTEND_URL,
+  "https://movie-streaming-ten.vercel.app",
+  "http://localhost:5173",
+];
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        return callback(null, true);
+      }
+      return callback(new Error("CORS policy: origin not allowed"), false);
+    },
     credentials: true,
   })
 );
