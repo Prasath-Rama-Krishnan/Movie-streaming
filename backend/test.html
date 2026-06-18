@@ -18,7 +18,11 @@
       async function send() {
         const videoUrl = document.getElementById("videoUrl").value;
 
+<<<<<<< HEAD
 const res = await fetch("https://movie-streaming-men8.onrender.com/api/movies/add-by-video", {
+=======
+        const res = await fetch("https://movie-streaming-men8.onrender.com/api/movies/add-by-video", {
+>>>>>>> e0eb605 (Updated backend and frontend changes)
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ videoUrl }),

@@ -7,7 +7,11 @@ const API_BASE_URL = rawApiUrl && !/localhost|127\.0\.0\.1/.test(rawApiUrl)
   : defaultApiUrl;
 
 const API = axios.create({
+<<<<<<< HEAD
   baseURL: API_BASE_URL,
+=======
+  baseURL: "https://movie-streaming-men8.onrender.com/api",
+>>>>>>> e0eb605 (Updated backend and frontend changes)
   withCredentials: true,
 });
 
