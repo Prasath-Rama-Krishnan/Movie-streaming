@@ -20,6 +20,7 @@ const allowedOrigins = [
   FRONTEND_URL,
   "https://movie-streaming-ten.vercel.app",
   "http://localhost:5173",
+  "https://movie-streaming-men8.onrender.com",
 ];
 
 app.use(
