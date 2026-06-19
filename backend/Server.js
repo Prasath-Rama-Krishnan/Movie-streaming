@@ -25,7 +25,6 @@ const allowedOrigins = [
 
 app.use(
   cors({
-<<<<<<< HEAD
     origin: function (origin, callback) {
       if (!origin) return callback(null, true);
       if (allowedOrigins.indexOf(origin) !== -1) {
@@ -33,9 +32,6 @@ app.use(
       }
       return callback(new Error("CORS policy: origin not allowed"), false);
     },
-=======
-    origin: "https://movie-streaming-men8.onrender.com",
->>>>>>> e0eb605 (Updated backend and frontend changes)
     credentials: true,
   })
 );
