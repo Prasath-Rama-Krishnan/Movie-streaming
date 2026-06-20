@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
+const Movie = require("./models/Movie");
 
 // ROUTES
 const authRoutes = require("./routes/authRoutes");
@@ -48,8 +49,46 @@ app.use("/api/user", require("./routes/userRoutes"));
 =========================== */
 const PORT = process.env.PORT || 5000;
 
+const seedMovies = async () => {
+  const count = await Movie.countDocuments();
+  if (count > 0) return;
+
+  const sampleMovies = [
+    {
+      title: "Petta",
+      videoUrl: "https://res.cloudinary.com/dkwmtfidv/video/upload/v1/sample/Petta.mp4",
+      description: "A police officer takes on a criminal kingpin.",
+      year: "2019",
+      genre: "Action, Drama",
+      primaryGenre: "Action",
+      posterUrl: "https://res.cloudinary.com/dkwmtfidv/image/upload/v1/sample/Petta.jpg",
+      director: "Karthik Subbaraj",
+      actors: "Rajinikanth, Vijay Sethupathi",
+      imdbRating: "7.5",
+      language: "Tamil",
+    },
+    {
+      title: "Soodhu Kavvum",
+      videoUrl: "https://res.cloudinary.com/dkwmtfidv/video/upload/v1/sample/Soodhu_Kavvum.mp4",
+      description: "A dark comedy about a group of bumbling kidnappers.",
+      year: "2013",
+      genre: "Comedy, Crime, Thriller",
+      primaryGenre: "Comedy",
+      posterUrl: "https://res.cloudinary.com/dkwmtfidv/image/upload/v1/sample/Soodhu_Kavvum.jpg",
+      director: "Nalan Kumarasamy",
+      actors: "Vijay Sethupathi, Sanchita Shetty",
+      imdbRating: "8.0",
+      language: "Tamil",
+    },
+  ];
+
+  await Movie.insertMany(sampleMovies);
+  console.log(`Seeded ${sampleMovies.length} movies`);
+};
+
 const startServer = async () => {
   await connectDB();
+  await seedMovies();
   const server = app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
   });

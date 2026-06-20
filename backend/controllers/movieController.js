@@ -131,6 +131,7 @@ exports.cloudinaryWebhook = async (req, res) => {
     const movie = await Movie.create({
       title: displayTitle,
       videoUrl: secure_url,
+      primaryGenre: "Other",
     });
 
     const omdbData = await fetchMovieFromOMDb(searchTitle);
