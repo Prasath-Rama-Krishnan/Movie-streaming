@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import API from "../api/api";
 
 export const useMoviesApi = () => {
@@ -83,3 +84,25 @@ export const useMoviesApi = () => {
     searchMoviesInGenre,
   };
 };
+
+const useMovies = () => {
+  const [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    let mounted = true;
+    const loadMovies = async () => {
+      const { getAllMovies } = useMoviesApi();
+      const allMovies = await getAllMovies();
+      if (mounted) setMovies(allMovies);
+    };
+
+    loadMovies();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  return movies;
+};
+
+export default useMovies;

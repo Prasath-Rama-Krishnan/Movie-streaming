@@ -9,8 +9,8 @@ function Content() {
   // Group movies by category
   const sections = {};
   movies.forEach((movie) => {
-    if (!sections[movie.category]) sections[movie.category] = [];
-    sections[movie.category].push(movie);
+    if (!sections[movie.primaryGenre]) sections[movie.primaryGenre] = [];
+    sections[movie.primaryGenre].push(movie);
   });
 
   // Show only first 3 categories
@@ -28,8 +28,8 @@ function Content() {
             {items.map((movie) => (
               <article key={movie._id} className="content__card">
                 <Link to={`/movie/${movie._id}`}>
-                  <img src={movie.posterUrl} alt={movie.name} />
-                  <h3>{movie.name}</h3>
+                  <img src={movie.posterUrl} alt={movie.title} />
+                  <h3>{movie.title}</h3>
                 </Link>
               </article>
             ))}
