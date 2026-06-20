@@ -6,12 +6,12 @@ const API_BASE_URL = rawApiUrl && !/localhost|127\.0\.0\.1/.test(rawApiUrl)
   ? rawApiUrl
   : defaultApiUrl;
 
+const normalizedBase = API_BASE_URL.endsWith("/api")
+  ? API_BASE_URL.replace(/\/+$/, "")
+  : API_BASE_URL.replace(/\/+$/, "") + "/api";
+
 const API = axios.create({
-<<<<<<< HEAD
-  baseURL: API_BASE_URL,
-=======
-  baseURL: "https://movie-streaming-men8.onrender.com/api",
->>>>>>> e0eb605 (Updated backend and frontend changes)
+  baseURL: normalizedBase,
   withCredentials: true,
 });
 
