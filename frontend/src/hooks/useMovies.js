@@ -1,6 +1,4 @@
-import axios from "axios";
-
-const API = "https://movie-streaming-men8.onrender.com/api/movies";
+import API from "../api/api";
 
 export const useMoviesApi = () => {
 
@@ -9,10 +7,10 @@ export const useMoviesApi = () => {
   ========================= */
   const getAllMovies = async () => {
     try {
-      const res = await axios.get(API);
+      const res = await API.get("/movies");
       return res.data.results || [];
     } catch (err) {
-      console.error("Failed to fetch movies:", err.message);
+      console.error("Failed to fetch movies:", err.response?.status, err.message);
       return [];
     }
   };
@@ -23,10 +21,10 @@ export const useMoviesApi = () => {
   ========================= */
   const getMoviesByGenre = async (genre) => {
     try {
-      const res = await axios.get(`${API}/genre/${genre}`);
+      const res = await API.get(`/movies/genre/${genre}`);
       return res.data.results || [];
     } catch (err) {
-      console.error("Failed to fetch genre movies:", err.message);
+      console.error("Failed to fetch genre movies:", err.response?.status, err.message);
       return [];
     }
   };
@@ -37,10 +35,10 @@ export const useMoviesApi = () => {
   ========================= */
   const getMovieById = async (id) => {
     try {
-      const res = await axios.get(`${API}/${id}`);
+      const res = await API.get(`/movies/${id}`);
       return res.data;
     } catch (err) {
-      console.error("Failed to fetch movie:", err.message);
+      console.error("Failed to fetch movie:", err.response?.status, err.message);
       return null;
     }
   };
@@ -52,10 +50,10 @@ export const useMoviesApi = () => {
   const searchMovies = async (query) => {
     try {
       if (!query || !query.trim()) return [];
-      const res = await axios.get(`${API}/search?q=${query.trim()}`);
+      const res = await API.get(`/movies/search?q=${encodeURIComponent(query.trim())}`);
       return res.data.results || [];
     } catch (err) {
-      console.error("Search failed:", err.message);
+      console.error("Search failed:", err.response?.status, err.message);
       return [];
     }
   };
