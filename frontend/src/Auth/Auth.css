@@ -229,7 +229,7 @@ input:focus {
 /* ======================== */
 /* RESPONSIVE - TABLET */
 /* ======================== */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     h1 {
         font-size: 32px;
         padding-bottom: 10px;
@@ -237,13 +237,23 @@ input:focus {
 
     .main-box {
         width: 90vw;
-        height: 520px;
-        max-width: 550px;
+        height: auto;
+        flex-direction: column;
+        max-width: 100%;
     }
 
     .glass-container,
     .right-box {
-        width: 50%;
+        width: 100%;
+        border-right: none;
+    }
+
+    .glass-container {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .right-box {
+        min-height: 200px;
     }
 
     input {
@@ -268,7 +278,7 @@ input:focus {
 /* ======================== */
 /* RESPONSIVE - MOBILE */
 /* ======================== */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     h1 {
         font-size: 24px;
         padding-bottom: 8px;

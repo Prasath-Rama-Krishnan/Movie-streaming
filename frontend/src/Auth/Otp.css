@@ -115,10 +115,10 @@
 /* ======================== */
 /* RESPONSIVE - TABLET */
 /* ======================== */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .otp-box {
     width: 90vw;
-    max-width: 450px;
+    max-width: 500px;
     padding: 40px 30px;
     border-radius: 20px;
   }
@@ -157,7 +157,7 @@
 /* ======================== */
 /* RESPONSIVE - MOBILE */
 /* ======================== */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .otp-container {
     width: 100vw;
     height: 100vh;
