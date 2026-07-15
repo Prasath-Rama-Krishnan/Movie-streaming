@@ -73,6 +73,10 @@
     font-size: 26px;
   }
 
+  .movie-meta {
+    font-size: 14px;
+  }
+
   .movie-info {
     flex-direction: column;
     padding: 20px;
@@ -81,9 +85,58 @@
 
   .movie-poster {
     width: 220px;
+    margin: 0 auto;
   }
 
   .movie-desc p {
     font-size: 15px;
+  }
+
+  .movie-video {
+    max-height: 50vh;
+  }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 480px) {
+  .movie-page {
+    min-height: auto;
+  }
+
+  .movie-header {
+    padding: 12px;
+  }
+
+  .movie-header h1 {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+
+  .movie-meta {
+    font-size: 13px;
+  }
+
+  .movie-info {
+    padding: 12px;
+    gap: 16px;
+  }
+
+  .movie-poster {
+    width: 180px;
+    margin: 0 auto;
+  }
+
+  .movie-desc h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .movie-desc p {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .movie-video {
+    max-height: 40vh;
   }
 }

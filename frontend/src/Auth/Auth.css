@@ -225,3 +225,99 @@ input:focus {
     color: #ff1a1a;
     text-decoration: underline;
 }
+
+/* ======================== */
+/* RESPONSIVE - TABLET */
+/* ======================== */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 32px;
+        padding-bottom: 10px;
+    }
+
+    .main-box {
+        width: 90vw;
+        height: 520px;
+        max-width: 550px;
+    }
+
+    .glass-container,
+    .right-box {
+        width: 50%;
+    }
+
+    input {
+        width: 90%;
+        padding: 10px 12px;
+        font-size: 15px;
+        margin-bottom: 12px;
+    }
+
+    .red-btn {
+        width: 95%;
+        padding: 10px 12px;
+        font-size: 16px;
+    }
+
+    .panel-content h2 {
+        font-size: 26px;
+        margin-bottom: 8px;
+    }
+}
+
+/* ======================== */
+/* RESPONSIVE - MOBILE */
+/* ======================== */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 24px;
+        padding-bottom: 8px;
+    }
+
+    .main-box {
+        width: 95vw;
+        height: auto;
+        flex-direction: column;
+        max-width: 100%;
+        border-radius: 16px;
+    }
+
+    .glass-container {
+        width: 100%;
+        padding: 20px;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .right-box {
+        width: 100%;
+        min-height: 200px;
+    }
+
+    .form-box {
+        padding: 15px 20px;
+    }
+
+    input {
+        width: 100%;
+        padding: 9px 11px;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .red-btn {
+        width: 100%;
+        padding: 9px 11px;
+        font-size: 15px;
+    }
+
+    .panel-content h2 {
+        font-size: 20px;
+        margin-bottom: 6px;
+    }
+
+    .switch {
+        margin-top: 8px;
+        font-size: 14px;
+    }
+}

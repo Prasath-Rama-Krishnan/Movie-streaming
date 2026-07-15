@@ -23,8 +23,33 @@
     padding: 20px;
   }
 
+  .search-page h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
   .search-grid,
   .movie-grid {
-    gap: 18px;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 14px;
+  }
+}
+
+/* Mobile Small */
+@media (max-width: 480px) {
+  .search-page {
+    padding: 12px;
+    min-height: auto;
+  }
+
+  .search-page h2 {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  .search-grid,
+  .movie-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
   }
 }

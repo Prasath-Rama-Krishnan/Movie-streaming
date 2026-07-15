@@ -70,3 +70,66 @@
 .remove-btn:hover {
   background: #e50914;
 }
+
+/* Responsive - Tablet */
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 16px;
+  }
+
+  .profile-header h2 {
+    font-size: 20px;
+  }
+
+  .profile-header p {
+    font-size: 13px;
+  }
+
+  .watchlater-title {
+    font-size: 18px;
+  }
+
+  .watchlater-grid {
+    gap: 12px;
+  }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 480px) {
+  .profile-container {
+    padding: 12px;
+    min-height: auto;
+  }
+
+  .profile-header {
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+  }
+
+  .profile-header h2 {
+    font-size: 18px;
+  }
+
+  .profile-header p {
+    font-size: 12px;
+  }
+
+  .watchlater-title {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .watchlater-grid {
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .watchlater-empty {
+    font-size: 14px;
+  }
+
+  .remove-btn {
+    font-size: 11px;
+    padding: 3px 5px;
+  }
+}

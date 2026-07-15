@@ -32,9 +32,34 @@
 
   .genre-page h2 {
     font-size: 20px;
+    margin-bottom: 20px;
   }
 
   .genre-grid {
-    gap: 18px;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 14px;
+  }
+}
+
+/* Mobile Small */
+@media (max-width: 480px) {
+  .genre-page {
+    padding: 12px;
+    min-height: auto;
+  }
+
+  .genre-page h2 {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  .genre-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+  }
+
+  .empty-text {
+    margin-top: 30px;
+    font-size: 14px;
   }
 }

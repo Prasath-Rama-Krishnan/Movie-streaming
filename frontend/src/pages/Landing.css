@@ -63,7 +63,7 @@
 }
 
 /* =========================
-   MOBILE RESPONSIVE
+   MOBILE RESPONSIVE - TABLET
 ========================= */
 @media (max-width: 768px) {
   .landing {
@@ -72,9 +72,38 @@
 
   .section-title {
     font-size: 18px;
+    margin: 25px 0 14px;
   }
 
   .see-more {
     font-size: 13px;
+  }
+
+  .movie-row {
+    gap: 14px;
+  }
+}
+
+/* =========================
+   MOBILE RESPONSIVE - PHONE
+========================= */
+@media (max-width: 480px) {
+  .landing {
+    padding: 12px;
+    min-height: auto;
+  }
+
+  .section-title {
+    font-size: 16px;
+    margin: 20px 0 12px;
+  }
+
+  .see-more {
+    font-size: 12px;
+  }
+
+  .movie-row {
+    gap: 10px;
+    padding-bottom: 8px;
   }
 }
