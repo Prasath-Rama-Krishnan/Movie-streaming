@@ -107,45 +107,80 @@ exports.getMoviesByGenre = async (req, res) => {
 
 /* =========================
    CLOUDINARY WEBHOOK
-   (DUPLICATE SAFE BY TITLE)
+   (HANDLES VIDEOS & POSTERS)
 ========================= */
 exports.cloudinaryWebhook = async (req, res) => {
   try {
-    const { secure_url, resource_type } = req.body;
-    if (resource_type !== "video") return res.sendStatus(200);
+    const { secure_url, resource_type, folder } = req.body;
 
-    const fileName = secure_url.split("/").pop();
-    const rawTitle = decodeURIComponent(fileName.replace(/\.[^/.]+$/, ""));
-    const { searchTitle, displayTitle } = normalizeTitle(rawTitle);
+    // Handle VIDEO uploads - create new movie
+    if (resource_type === "video") {
+      const fileName = secure_url.split("/").pop();
+      const rawTitle = decodeURIComponent(fileName.replace(/\.[^/.]+$/, ""));
+      const { searchTitle, displayTitle } = normalizeTitle(rawTitle);
 
-    // ✅ Prevent duplicate movies by title
-    const exists = await Movie.findOne({
-      title: new RegExp(`^${displayTitle}$`, "i"),
-    });
+      // ✅ Prevent duplicate movies by title
+      const exists = await Movie.findOne({
+        title: new RegExp(`^${displayTitle}$`, "i"),
+      });
 
-    if (exists) {
-      console.log("⛔ Duplicate ignored:", displayTitle);
+      if (exists) {
+        console.log("⛔ Duplicate ignored:", displayTitle);
+        return res.sendStatus(200);
+      }
+
+      const movie = await Movie.create({
+        title: displayTitle,
+        videoUrl: secure_url,
+        primaryGenre: "Other",
+      });
+
+      const omdbData = await fetchMovieFromOMDb(searchTitle);
+      if (omdbData) {
+        movie.genre = omdbData.genre;
+        movie.primaryGenre = resolvePrimaryGenre(omdbData.genre);
+        movie.description = omdbData.description;
+        movie.posterUrl = omdbData.posterUrl;
+        movie.year = omdbData.year;
+        movie.language = omdbData.language;
+        await movie.save();
+      }
+
+      console.log(`🎬 Added: ${displayTitle} → ${movie.primaryGenre}`);
       return res.sendStatus(200);
     }
 
-    const movie = await Movie.create({
-      title: displayTitle,
-      videoUrl: secure_url,
-      primaryGenre: "Other",
-    });
+    // Handle IMAGE/POSTER uploads - update existing movie
+    if (resource_type === "image") {
+      const fileName = secure_url.split("/").pop();
+      const rawTitle = decodeURIComponent(fileName.replace(/\.[^/.]+$/, ""));
+      
+      // Remove "_poster" suffix if present for matching
+      const displayTitle = rawTitle
+        .replace(/_poster$/i, "")
+        .replace(/\(Tamil\)/gi, "")
+        .replace(/\(Hindi\)/gi, "")
+        .replace(/\(Telugu\)/gi, "")
+        .replace(/\(USA\)/gi, "")
+        .replace(/\(\d{4}\)/g, "")
+        .trim();
 
-    const omdbData = await fetchMovieFromOMDb(searchTitle);
-    if (omdbData) {
-      movie.genre = omdbData.genre;
-      movie.primaryGenre = resolvePrimaryGenre(omdbData.genre);
-      movie.description = omdbData.description;
-      movie.posterUrl = omdbData.posterUrl;
-      movie.year = omdbData.year;
-      movie.language = omdbData.language;
-      await movie.save();
+      // Find and update the movie with this poster
+      const movie = await Movie.findOneAndUpdate(
+        { title: new RegExp(`^${displayTitle}$`, "i") },
+        { posterUrl: secure_url },
+        { new: true }
+      );
+
+      if (movie) {
+        console.log(`🖼️  Updated poster: ${displayTitle}`);
+      } else {
+        console.log(`⚠️  Movie not found for poster: ${displayTitle}`);
+      }
+
+      return res.sendStatus(200);
     }
 
-    console.log(`🎬 Added: ${displayTitle} → ${movie.primaryGenre}`);
     res.sendStatus(200);
   } catch (error) {
     console.error("Webhook failed:", error.message);
